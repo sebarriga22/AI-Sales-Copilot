@@ -8,6 +8,12 @@ import { OpenAI } from 'openai';
 dotenv.config();
 
 // File path setup for ESM
+const openai = new OpenAI({ apiKey: process.env.API_KEY || process.env.OPENAI_API_KEY });
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// File path setup
+>>>>>>> b51f649 (Update: new frontend + updated server.js)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
