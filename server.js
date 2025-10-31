@@ -136,5 +136,5 @@ app.post("/generate", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`AI Email Generator server listening on http://localhost:${"${PORT}"}`);
+  console.log(`AI Email Generator server listening on http://localhost:${PORT}`);
 });
