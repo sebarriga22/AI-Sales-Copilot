@@ -1,0 +1,116 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Sales Email Generator (MVP)</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; max-width: 900px; margin: 24px auto; padding: 0 12px; }
+    header { margin-bottom: 16px; }
+    h1 { margin: 0 0 4px; }
+    p.hint { color: #555; margin-top: 0; }
+    form { display: grid; gap: 12px; margin-bottom: 16px; }
+    label { font-weight: 600; }
+    input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; }
+    button { padding: 10px 14px; border: 0; border-radius: 10px; font-weight: 700; cursor: pointer; }
+    button.primary { background: black; color: white; }
+    .row { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+    .card { border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; }
+    pre { white-space: pre-wrap; word-wrap: break-word; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI Sales Email Generator</h1>
+    <p class="hint">Enter 2–3 data points and get a tailored, professional email. This MVP runs locally.</p>
+  </header>
+
+  <form id="email-form">
+    <div class="row">
+      <div>
+        <label>Role & Industry</label>
+        <input name="roleIndustry" placeholder="VP Finance, mid-market SaaS" required />
+      </div>
+      <div>
+        <label>Pain Point</label>
+        <input name="painPoint" placeholder="Reconciliation drags past month-end" required />
+      </div>
+    </div>
+
+    <label>Value Proposition</label>
+    <input name="valueProp" placeholder="Cut close time by ~30% via automated tie-outs" required />
+
+    <div class="row">
+      <div>
+        <label>Proof (optional)</label>
+        <input name="proof" placeholder="Used by 120+ SaaS finance teams" />
+      </div>
+      <div>
+        <label>CTA Style</label>
+        <select name="ctaStyle">
+          <option value="soft_call">Soft (e.g., 'open to a short chat?')</option>
+          <option value="firm_call">Firm (e.g., 'book a 15-min slot')</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="primary" type="submit">Generate Email</button>
+  </form>
+
+  <div id="result" class="card" hidden>
+    <h3>Result</h3>
+    <div class="mono">
+      <div><strong>Subject:</strong> <span id="subject"></span></div>
+      <div><strong>Opening:</strong> <span id="opening"></span></div>
+      <div><strong>Body:</strong></div>
+      <pre id="body"></pre>
+      <div><strong>CTA:</strong> <span id="cta"></span></div>
+    </div>
+    <p><button id="copyBtn">Copy Body</button></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("email-form");
+    const result = document.getElementById("result");
+    const subject = document.getElementById("subject");
+    const opening = document.getElementById("opening");
+    const body = document.getElementById("body");
+    const cta = document.getElementById("cta");
+    const copyBtn = document.getElementById("copyBtn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      result.hidden = true;
+      try {
+        const fd = new FormData(form);
+        const payload = Object.fromEntries(fd.entries());
+        const r = await fetch("/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await r.json();
+        if (!data.ok) throw new Error(data.error || "Unknown error");
+        const email = data.email;
+        subject.textContent = email.subject;
+        opening.textContent = email.opening_line;
+        body.textContent = email.body;
+        cta.textContent = email.cta;
+        result.hidden = false;
+      } catch (err) {
+        alert("Generation failed: " + err.message);
+      }
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(body.textContent);
+        copyBtn.textContent = "Copied!";
+        setTimeout(() => (copyBtn.textContent = "Copy Body"), 1200);
+      } catch {}
+    });
+  </script>
+</body>
+</html>
