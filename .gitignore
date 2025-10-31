@@ -1,2 +1,9 @@
+node_modules/
+.DS_Store
 .env
-node_modules
+public/*backup*.html
+public/index.rtf
+public/rewrite*.html
+server.backup.js
+*.save
+s+
