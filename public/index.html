@@ -12,313 +12,334 @@
     .nav a { text-decoration: none; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; color: #111; background: #fff; }
     .nav a.active { background: #000; color: #fff; border-color: #000; }
 
-    .subject-output { width: 100%; border: none; border-bottom: 1px solid #eee; padding: 10px 0; font-size: 18px; font-weight: 700; margin-bottom: 25px; outline: none; }
-    .body-textarea { width: 100%; height: 400px; border: none; padding: 10px 0; font-size: 16px; resize: none; outline: none; line-height: 1.6; font-family: Georgia, serif; }
-    
-    .button-bar { display: flex; justify-content: flex-end; gap: 10px; padding-top: 10px; border-top: 1px solid #eee; margin-top: 10px; }
-    .btn { padding: 10px 14px; border: 0; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background .2s; }
-    .btn.primary { background: #007bff; color: white; }
-    .btn:hover { opacity: 0.9; }
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AI Sales Generator: Compose</title>
+<style>
+:root { --maxw: 1200px; --pad: 16px; --radius: 12px; --border: #e5e5e5; }
+* { box-sizing: border-box; }
+body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; max-width: var(--maxw); margin:0 auto; padding:0; background:#f0f0f0; color:#111; }
+>>>>>>> ba275de (ui: final Compose + AI Personalization)
 
-    /* Right Panel: AI Insights */
-    .insights-panel { padding: 30px; background: #f9f9f9; position: relative; }
-    .ai-card { background: white; border: 1px solid #007bff30; border-radius: var(--radius); padding: 15px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .ai-card h4 { margin: 0 0 10px; color: #007bff; font-size: 18px; font-weight: 600; }
-    .ai-content { min-height: 500px; line-height: 1.5; }
-    .ai-content p { margin-bottom: 15px; font-size: 14px; color: #333; }
-    .ai-content strong { color: #000; }
+.container { display: grid; grid-template-columns: 2.2fr 1fr; gap: 0; min-height: 100vh; background:#fff; }
 
-    .ai-prompt-box { 
-        position: absolute; 
-        bottom: 0; 
-        left: 0; 
-        width: 100%; 
-        padding: 20px 30px;
-        background: #fff;
-        border-top: 1px solid #ddd;
-    }
-    .ai-prompt-box input {
-        width: 100%;
-        padding: 12px 15px;
-        border: 1px solid #ccc;
-        border-radius: 20px;
-        outline: none;
-        font-size: 15px;
-        transition: border-color 0.2s;
-    }
-    .ai-prompt-box input:focus { border-color: #007bff; }
-    
-    /* Loading Spinner */
-    .btn.loading{ position:relative; pointer-events:none; opacity:.85; }
-    .btn.loading::after{ content:""; position:absolute; top:50%; right:12px; width:16px; height:16px; border:2px solid #fff; border-right-color:transparent; border-radius:50%; transform:translateY(-50%); animation:spin .8s linear infinite; }
-    @keyframes spin{ to{ transform: translateY(-50%) rotate(360deg); } }
+/* Left Panel: Compose */
+.compose-panel { padding: 40px; border-right: 1px solid #ddd; }
+.compose-header { margin-bottom: 30px; }
+.nav a { text-decoration: none; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; color: #111; background: #fff; }
+.nav a.active { background: #000; color: #fff; border-color: #000; }
 
-  </style>
+.subject-output { width: 100%; border: none; border-bottom: 1px solid #eee; padding: 10px 0; font-size: 18px; font-weight: 700; margin-bottom: 25px; outline: none; }
+.body-textarea { width: 100%; height: 400px; border: none; padding: 10px 0; font-size: 16px; resize: none; outline: none; line-height: 1.6; font-family: Georgia, serif; }
+
+.button-bar { display: flex; justify-content: flex-end; gap: 10px; padding-top: 10px; border-top: 1px solid #eee; margin-top: 10px; }
+.btn { padding: 10px 14px; border: 0; border-radius: 6px; font-weight: 600; cursor: pointer; transition: background .2s; }
+.btn.primary { background: #007bff; color: white; }
+.btn:hover { opacity: 0.9; }
+
+/* Right Panel: AI Insights */
+.insights-panel { padding: 30px; background: #f9f9f9; position: relative; }
+.ai-card { background: white; border: 1px solid #007bff30; border-radius: var(--radius); padding: 15px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.ai-card h4 { margin: 0 0 10px; color: #007bff; font-size: 18px; font-weight: 600; }
+.ai-content { min-height: 500px; line-height: 1.5; }
+.ai-content p { margin-bottom: 15px; font-size: 14px; color: #333; }
+.ai-content strong { color: #000; }
+
+.ai-prompt-box {
+position: absolute;
+bottom: 0;
+left: 0;
+width: 100%;
+padding: 20px 30px;
+background: #fff;
+border-top: 1px solid #ddd;
+}
+.ai-prompt-box input {
+width: 100%;
+padding: 12px 15px;
+border: 1px solid #ccc;
+border-radius: 20px;
+outline: none;
+font-size: 15px;
+transition: border-color 0.2s;
+}
+.ai-prompt-box input:focus { border-color: #007bff; }
+
+/* Loading Spinner */
+.btn.loading{ position:relative; pointer-events:none; opacity:.85; }
+.btn.loading::after{ content:""; position:absolute; top:50%; right:12px; width:16px; height:16px; border:2px solid #fff; border-right-color:transparent; border-radius:50%; transform:translateY(-50%); animation:spin .8s linear infinite; }
+@keyframes spin{ to{ transform: translateY(-50%) rotate(360deg); } }
+
+</style>
 </head>
 <body>
-  <div class="container">
-    
-    <div class="compose-panel">
-      <nav class="nav">
-        <a href="/" class="active">Generate New Email</a>
-        <a href="/rewrite.html">Polish Existing Email</a>
-      </nav>
-      
-      <div id="controls" style="font-size:14px; margin-bottom:15px;">
-          <p><strong>From:</strong> Your Name &lt;your.name@company.com&gt;</p>
-          <p><strong>To:</strong> Patricia Crowley</p>
-          <hr style="border:none; border-top:1px dashed #eee; margin:10px 0;" />
-          
-          <label for="persona-selector">Target Persona Quick Select:</label>
-          <select id="persona-selector">
-              <option value="VP Marketing, growing firm">VP Marketing, growing firm</option>
-              <option value="Advisory / CAS Practice Leader">Advisory / CAS Practice Leader</option>
-              <option value="Firm Owner, Small CPA Firm">Firm Owner, Small CPA Firm</option>
-              <option value="CFO, Mid-Sized Business">CFO, Mid-Sized Business</option>
-              <option value="Tax Manager / Partner">Tax Manager / Partner</option>
-              <option value="Operations Lead, Accounting Firm">Operations Lead, Accounting Firm</option>
-              <option value="IT/Tech Leader, Accounting Firm">IT/Tech Leader, Accounting Firm</option>
-              <option value="Bookkeeper / Staff Accountant">Bookkeeper / Staff Accountant</option>
-              <option value="Managing Partner / CEO">Managing Partner / CEO</option>
-              <option value="Small Business Client (End User)">Small Business Client (End User)</option>
-              <option value="Marketing Director / Lead">Marketing Director / Lead</option>
-          </select>
-          <hr style="border:none; border-top:1px dashed #eee; margin:10px 0;" />
+<div class="container">
 
-          <input name="roleIndustry" id="roleIndustry" value="Advisory / CAS Practice Leader" style="display:none;" />
-          <input name="painPoint" id="painPoint" value="Manual data entry for client reconciliation is consuming staff time." style="display:none;" />
-          <input name="valueProp" id="valueProp" value="Canopy provides a single source of truth for all client data, eliminating data entry and errors." style="display:none;" />
-          <input name="tone" id="tone" value="conversational-professional" style="display:none;" />
-          <input name="ctaStyle" id="ctaStyle" value="soft_call" style="display:none;" />
-          <input name="variants" id="variants" value="1" style="display:none;" />
-          
-          <label for="proof-selector">Competitor Focus (Optional)</label>
-          <select name="proof" id="proof-selector">
-              <option value="">No Specific Competitor</option>
-              <option value="Karbon">Karbon</option>
-              <option value="Taxdome">Taxdome</option>
-              <option value="Financial Cents">Financial Cents</option>
-              <option value="Firm360">Firm360</option>
-              <option value="Ignition">Ignition</option>
-              <option value="Drake Firm Portal">Drake Firm Portal</option>
-              <option value="Mango">Mango</option>
-              <option value="CCH Axcess">CCH Axcess</option>
-              <option value="Practice CS">Practice CS</option>
-          </select>
-          <hr style="border:none; border-top:1px dashed #eee; margin:10px 0;" />
-      </div>
+<div class="compose-panel">
+<nav class="nav">
+<a href="/" class="active">Generate New Email</a>
+<a href="/rewrite.html">Polish Existing Email</a>
+</nav>
 
-      <form id="compose-form">
-          <input type="text" name="subject" id="subject-output" class="subject-output" placeholder="Subject: XXXXX" />
-          <textarea name="body" id="body-output" class="body-textarea" placeholder="Hey {First Name}, Marketing directors at growing firms often struggle..."></textarea>
-      
-          <div class="button-bar">
-              <button id="generateBtn" type="submit" class="btn primary">Generate</button>
-              <button id="copyBtn" type="button" class="btn">Copy</button>
-          </div>
-      </form>
-    </div>
+<div id="controls" style="font-size:14px; margin-bottom:15px;">
+<p><strong>From:</strong> Your Name &lt;your.name@company.com&gt;</p>
+<p><strong>To:</strong> Patricia Crowley</p>
+<hr style="border:none; border-top:1px dashed #eee; margin:10px 0;" />
 
-    <div class="insights-panel">
-        <div class="ai-card">
-            <h4>AI Personalization</h4>
-            
-            <div class="ai-content" id="ai-suggestion-box">
-                <p>Click **Generate** to draft the email and view competitor analysis here.</p>
-                <hr style="border:none; border-top:1px dashed #ddd; margin:15px 0;" />
-                <p><strong>Contextual Signals (Placeholder):</strong></p>
-                <p>Hiring Signal (Finance Team Scaling)</p>
-                <p>Funding Signal ($5M raised last quarter)</p>
-            </div>
-        </div>
-        
-        <div class="ai-prompt-box">
-            <input type="text" id="refine-input" placeholder="TYPE Here to personalize (e.g., 'Make it 50 words shorter')" />
-        </div>
-    </div>
-  </div>
+<label for="persona-selector">Target Persona Quick Select:</label>
+<select id="persona-selector">
+<option value="VP Marketing, growing firm">VP Marketing, growing firm</option>
+<option value="Advisory / CAS Practice Leader">Advisory / CAS Practice Leader</option>
+<option value="Firm Owner, Small CPA Firm">Firm Owner, Small CPA Firm</option>
+<option value="CFO, Mid-Sized Business">CFO, Mid-Sized Business</option>
+<option value="Tax Manager / Partner">Tax Manager / Partner</option>
+<option value="Operations Lead, Accounting Firm">Operations Lead, Accounting Firm</option>
+<option value="IT/Tech Leader, Accounting Firm">IT/Tech Leader, Accounting Firm</option>
+<option value="Bookkeeper / Staff Accountant">Bookkeeper / Staff Accountant</option>
+<option value="Managing Partner / CEO">Managing Partner / CEO</option>
+<option value="Small Business Client (End User)">Small Business Client (End User)</option>
+<option value="Marketing Director / Lead">Marketing Director / Lead</option>
+</select>
+<hr style="border:none; border-top:1px dashed #eee; margin:10px 0;" />
 
-  <script>
-    const $ = (id) => document.getElementById(id);
-    const form = $('compose-form');
-    const generateBtn = $('generateBtn');
-    const subjectOutput = $('subject-output');
-    const bodyOutput = $('body-output');
-    const aiSuggestionBox = $('ai-suggestion-box');
-    const copyBtn = $('copyBtn');
-    const refineInput = $('refine-input');
+<input name="roleIndustry" id="roleIndustry" value="Advisory / CAS Practice Leader" style="display:none;" />
+<input name="painPoint" id="painPoint" value="Manual data entry for client reconciliation is consuming staff time." style="display:none;" />
+<input name="valueProp" id="valueProp" value="Canopy provides a single source of truth for all client data, eliminating data entry and errors." style="display:none;" />
+<input name="tone" id="tone" value="conversational-professional" style="display:none;" />
+<input name="ctaStyle" id="ctaStyle" value="soft_call" style="display:none;" />
+<input name="variants" id="variants" value="1" style="display:none;" />
 
-    let isRefining = false;
+<label for="proof-selector">Competitor Focus (Optional)</label>
+<select name="proof" id="proof-selector">
+<option value="">No Specific Competitor</option>
+<option value="Karbon">Karbon</option>
+<option value="Taxdome">Taxdome</option>
+<option value="Financial Cents">Financial Cents</option>
+<option value="Firm360">Firm360</option>
+<option value="Ignition">Ignition</option>
+<option value="Drake Firm Portal">Drake Firm Portal</option>
+<option value="Mango">Mango</option>
+<option value="CCH Axcess">CCH Axcess</option>
+<option value="Practice CS">Practice CS</option>
+</select>
+<hr style="border:none; border-top:1px dashed #eee; margin:10px 0;" />
+</div>
 
-    // Listener for Persona Selector: Updates hidden input value
-    $('persona-selector').addEventListener('change', (e) => {
-        $('roleIndustry').value = e.target.value;
-    });
+<form id="compose-form">
+<input type="text" name="subject" id="subject-output" class="subject-output" placeholder="Subject: XXXXX" />
+<textarea name="body" id="body-output" class="body-textarea" placeholder="Hey {First Name}, Marketing directors at growing firms often struggle..."></textarea>
 
-    function decodeEscapes(s){
-        s = String(s ?? '');
-        s = s.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n").replace(/\r\n/g, "\n").replace(/\r/g, "");
-        return s;
-    }
-    
-    function setButtonLoading(isLoading, button, text = 'Processing...') {
-        if (isLoading) {
-            button.classList.add('loading');
-            button.disabled = true;
-            if (button === generateBtn) button.textContent = 'Generating...';
-            if (button === refineInput) refineInput.placeholder = text;
-        } else {
-            button.classList.remove('loading');
-            button.disabled = false;
-            if (button === generateBtn) button.textContent = 'Generate';
-            if (button === refineInput) refineInput.placeholder = 'TYPE Here to personalize (e.g., \'Make it 50 words shorter\')';
-        }
-    }
+<div class="button-bar">
+<button id="generateBtn" type="submit" class="btn primary">Generate</button>
+<button id="copyBtn" type="button" class="btn">Copy</button>
+</div>
+</form>
+</div>
 
-    // --- Core Generation Logic (Initial Draft) ---
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        // Payload pulls values from the hidden inputs and the visible selector
-        const payload = {
-            roleIndustry: $('roleIndustry').value,
-            painPoint: $('painPoint').value,
-            valueProp: $('valueProp').value,
-            proof: $('proof-selector').value, // Use the selected competitor value
-            ctaStyle: $('ctaStyle').value,
-            tone: $('tone').value,
-            variants: 1
-        };
+<div class="insights-panel">
+<div class="ai-card">
+<h4>AI Personalization</h4>
 
-        setButtonLoading(true, generateBtn);
-        aiSuggestionBox.innerHTML = '<p>Drafting email and analyzing competitor context...</p>';
+<div class="ai-content" id="ai-suggestion-box">
+<p>Click **Generate** to draft the email and view competitor analysis here.</p>
+<hr style="border:none; border-top:1px dashed #ddd; margin:15px 0;" />
+<p><strong>Contextual Signals (Placeholder):</strong></p>
+<p>Hiring Signal (Finance Team Scaling)</p>
+<p>Funding Signal ($5M raised last quarter)</p>
+</div>
+</div>
 
-        try {
-            const r = await fetch('/generate', { 
-                method:'POST', 
-                headers:{'Content-Type':'application/json'}, 
-                body: JSON.stringify(payload) 
-            });
-            const data = await r.json();
+<div class="ai-prompt-box">
+<input type="text" id="refine-input" placeholder="TYPE Here to personalize (e.g., 'Make it 50 words shorter')" />
+</div>
+</div>
+</div>
 
-            if (!data.ok) {
-                alert('Generation failed: ' + data.error);
-                throw new Error(data.error || 'Unknown error');
-            }
+<script>
+const $ = (id) => document.getElementById(id);
+const form = $('compose-form');
+const generateBtn = $('generateBtn');
+const subjectOutput = $('subject-output');
+const bodyOutput = $('body-output');
+const aiSuggestionBox = $('ai-suggestion-box');
+const copyBtn = $('copyBtn');
+const refineInput = $('refine-input');
 
-            const email = data.emails[0];
-            const competitorName = $('proof-selector').value;
-            const analysis = email.competitor_analysis || 'No competitor selected. Focus on persona and value.';
-            
-            // 1. Fill the Subject and Body fields
-            subjectOutput.value = email.subject.trim();
-            bodyOutput.value = `Hey {First Name},\n\n${email.opening_line.trim()}\n\n${email.body.trim()}\n\n${email.cta.trim()}\n\nBest,\n[Your Name]`;
-            
-            // 2. Update the AI suggestion box with Competitor Analysis
-            const currentPersona = $('roleIndustry').value;
+let isRefining = false;
 
-            aiSuggestionBox.innerHTML = `
-                <p><strong>✅ Draft Complete.</strong> Use the box below to refine.</p>
-                <hr style="border:none; border-top:1px dashed #ddd; margin:15px 0;" />
-                <p><strong>🎯 Competitor Insight (${competitorName || 'No Competitor Focus'}):</strong></p>
-                <p>${analysis.replace(/\n/g, '<br>')}</p>
-                <hr style="border:none; border-top:1px dashed #ddd; margin:15px 0;" />
-                <p><strong>Persona Focus:</strong></p>
-                <p>Messaging currently tailored for a <strong>${currentPersona}</strong> persona. Focus on centralized data for efficiency.</p>
-            `;
+// Listener for Persona Selector: Updates hidden input value
+$('persona-selector').addEventListener('change', (e) => {
+$('roleIndustry').value = e.target.value;
+});
 
+function decodeEscapes(s){
+s = String(s ?? '');
+s = s.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n").replace(/\r\n/g, "\n").replace(/\r/g, "");
+return s;
+}
 
-        } catch (e) {
-            aiSuggestionBox.innerHTML = `<p>❌ **Error:** ${e.message}. Check Terminal for API issues.</p>`;
-        } finally {
-            setButtonLoading(false, generateBtn);
-        }
-    });
+function setButtonLoading(isLoading, button, text = 'Processing...') {
+if (isLoading) {
+button.classList.add('loading');
+button.disabled = true;
+if (button === generateBtn) button.textContent = 'Generating...';
+if (button === refineInput) refineInput.placeholder = text;
+} else {
+button.classList.remove('loading');
+button.disabled = false;
+if (button === generateBtn) button.textContent = 'Generate';
+if (button === refineInput) refineInput.placeholder = 'TYPE Here to personalize (e.g., \'Make it 50 words shorter\')';
+}
+}
+
+// --- Core Generation Logic (Initial Draft) ---
+form.addEventListener('submit', async (e) => {
+e.preventDefault();
+
+// Payload pulls values from the hidden inputs and the visible selector
+const payload = {
+roleIndustry: $('roleIndustry').value,
+painPoint: $('painPoint').value,
+valueProp: $('valueProp').value,
+proof: $('proof-selector').value, // Use the selected competitor value
+ctaStyle: $('ctaStyle').value,
+tone: $('tone').value,
+variants: 1
+};
+
+setButtonLoading(true, generateBtn);
+aiSuggestionBox.innerHTML = '<p>Drafting email and analyzing competitor context...</p>';
+
+try {
+const r = await fetch('/generate', {
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body: JSON.stringify(payload)
+});
+const data = await r.json();
+
+if (!data.ok) {
+alert('Generation failed: ' + data.error);
+throw new Error(data.error || 'Unknown error');
+}
+
+const email = data.emails[0];
+const competitorName = $('proof-selector').value;
+const analysis = email.competitor_analysis || 'No competitor selected. Focus on persona and value.';
+
+// 1. Fill the Subject and Body fields
+subjectOutput.value = email.subject.trim();
+bodyOutput.value = `Hey {First Name},\n\n${email.opening_line.trim()}\n\n${email.body.trim()}\n\n${email.cta.trim()}\n\nBest,\n[Your Name]`;
+
+// 2. Update the AI suggestion box with Competitor Analysis
+const currentPersona = $('roleIndustry').value;
+
+aiSuggestionBox.innerHTML = `
+<p><strong>✅ Draft Complete.</strong> Use the box below to refine.</p>
+<hr style="border:none; border-top:1px dashed #ddd; margin:15px 0;" />
+<p><strong>🎯 Competitor Insight (${competitorName || 'No Competitor Focus'}):</strong></p>
+<p>${analysis.replace(/\n/g, '<br>')}</p>
+<hr style="border:none; border-top:1px dashed #ddd; margin:15px 0;" />
+<p><strong>Persona Focus:</strong></p>
+<p>Messaging currently tailored for a <strong>${currentPersona}</strong> persona. Focus on centralized data for efficiency.</p>
+`;
 
 
-    // --- Refinement Logic (Editing the Draft) ---
-    async function refineEmail() {
-        if (isRefining || !refineInput.value) return;
-        isRefining = true;
-        
-        const refinementPrompt = refineInput.value;
-        refineInput.value = ''; // Clear the input field immediately
-        
-        setButtonLoading(true, refineInput, `Refining: ${refinementPrompt}...`);
-        
-        const currentEmail = `Subject: ${subjectOutput.value}\n\n${bodyOutput.value}`;
-        
-        const payload = {
-            prompt: refinementPrompt,
-            email_text: currentEmail
-        };
-
-        try {
-            const r = await fetch('/rewrite', { 
-                method:'POST', 
-                headers:{'Content-Type':'application/json'}, 
-                body: JSON.stringify(payload) 
-            });
-            const data = await r.json();
-
-            if (!data.ok) {
-                alert('Refinement failed: ' + data.error);
-                throw new Error(data.error || 'Unknown rewrite error');
-            }
-            
-            const rewritten_text = data.rewritten_text || '';
-            const new_persona = data.new_persona || $('roleIndustry').value; 
-            
-            // 1. Split the rewritten text back into Subject and Body
-            const lines = rewritten_text.split('\n');
-            const newSubjectLine = lines.find(line => line.startsWith('Subject:'));
-            const newSubject = newSubjectLine ? newSubjectLine.replace('Subject:', '').trim() : subjectOutput.value;
-            const newBody = lines.slice(lines.indexOf(newSubjectLine) + 1).join('\n').trim();
-
-            subjectOutput.value = newSubject;
-            bodyOutput.value = newBody;
-            
-            // 2. Update the hidden input value
-            $('roleIndustry').value = new_persona;
-
-            // 3. Update the suggestion box log to show the change
-            const personaLog = `<p style="color:#007bff; font-weight:700;">Persona Updated: ${new_persona}</p>`;
-            
-            aiSuggestionBox.innerHTML = `
-                <p><strong>✨ Refinement complete:</strong> "${refinementPrompt}"</p>
-                ${(new_persona !== $('roleIndustry').value) ? personaLog : ''}
-            ` + aiSuggestionBox.innerHTML;
+} catch (e) {
+aiSuggestionBox.innerHTML = `<p>❌ **Error:** ${e.message}. Check Terminal for API issues.</p>`;
+} finally {
+setButtonLoading(false, generateBtn);
+}
+});
 
 
-        } catch (e) {
-            aiSuggestionBox.innerHTML = `<p>❌ **Refinement Error:** ${e.message}.</p>` + aiSuggestionBox.innerHTML;
-        } finally {
-            setButtonLoading(false, refineInput);
-            isRefining = false;
-        }
-    }
-    
-    // Wire up the refinement input to trigger on Enter key
-    refineInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // Prevent form submission
-            refineEmail();
-        }
-    });
+// --- Refinement Logic (Editing the Draft) ---
+async function refineEmail() {
+if (isRefining || !refineInput.value) return;
+isRefining = true;
+
+const refinementPrompt = refineInput.value;
+refineInput.value = ''; // Clear the input field immediately
+
+setButtonLoading(true, refineInput, `Refining: ${refinementPrompt}...`);
+
+const currentEmail = `Subject: ${subjectOutput.value}\n\n${bodyOutput.value}`;
+
+const payload = {
+prompt: refinementPrompt,
+email_text: currentEmail
+};
+
+try {
+const r = await fetch('/rewrite', {
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body: JSON.stringify(payload)
+});
+const data = await r.json();
+
+if (!data.ok) {
+alert('Refinement failed: ' + data.error);
+throw new Error(data.error || 'Unknown rewrite error');
+}
+
+const rewritten_text = data.rewritten_text || '';
+const new_persona = data.new_persona || $('roleIndustry').value;
+
+// 1. Split the rewritten text back into Subject and Body
+const lines = rewritten_text.split('\n');
+const newSubjectLine = lines.find(line => line.startsWith('Subject:'));
+const newSubject = newSubjectLine ? newSubjectLine.replace('Subject:', '').trim() : subjectOutput.value;
+const newBody = lines.slice(lines.indexOf(newSubjectLine) + 1).join('\n').trim();
+
+subjectOutput.value = newSubject;
+bodyOutput.value = newBody;
+
+// 2. Update the hidden input value
+$('roleIndustry').value = new_persona;
+
+// 3. Update the suggestion box log to show the change
+const personaLog = `<p style="color:#007bff; font-weight:700;">Persona Updated: ${new_persona}</p>`;
+
+aiSuggestionBox.innerHTML = `
+<p><strong>✨ Refinement complete:</strong> "${refinementPrompt}"</p>
+${(new_persona !== $('roleIndustry').value) ? personaLog : ''}
+` + aiSuggestionBox.innerHTML;
 
 
-    // --- Copy Button Logic ---
-    copyBtn.addEventListener('click', async () => {
-        const fullText = `Subject: ${subjectOutput.value}\n\n${bodyOutput.value}`;
-        try {
-            await navigator.clipboard.writeText(fullText);
-            copyBtn.textContent = 'Copied!';
-            setTimeout(() => (copyBtn.textContent = 'Copy'), 1200);
-        } catch (err) {
-            alert('Failed to copy. Try manual select.');
-        }
-    });
-    
-  </script>
+} catch (e) {
+aiSuggestionBox.innerHTML = `<p>❌ **Refinement Error:** ${e.message}.</p>` + aiSuggestionBox.innerHTML;
+} finally {
+setButtonLoading(false, refineInput);
+isRefining = false;
+}
+}
+
+// Wire up the refinement input to trigger on Enter key
+refineInput.addEventListener('keydown', (e) => {
+if (e.key === 'Enter') {
+e.preventDefault(); // Prevent form submission
+refineEmail();
+}
+});
+
+
+// --- Copy Button Logic ---
+copyBtn.addEventListener('click', async () => {
+const fullText = `Subject: ${subjectOutput.value}\n\n${bodyOutput.value}`;
+try {
+await navigator.clipboard.writeText(fullText);
+copyBtn.textContent = 'Copied!';
+setTimeout(() => (copyBtn.textContent = 'Copy'), 1200);
+} catch (err) {
+alert('Failed to copy. Try manual select.');
+}
+});
+
+</script>
 </body>
 </html>
+
