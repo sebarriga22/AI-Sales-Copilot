@@ -32,9 +32,7 @@ if (!API_KEY) {
 }
 
 // OpenAI client (SDK is fine even if you call fetch later)
-const openai = new OpenAI({ apiKey: API_KEY });
 
-const app = express();
 
 // Core middleware & static
 app.use(express.json({ limit: '1mb' }));
