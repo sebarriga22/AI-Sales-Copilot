@@ -46,7 +46,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/health', (_req, res) => res.json({ ok: true }));
 // --- end canonical header ---
 
-
 // ---- Helpers ----
 // --- CANOPY KNOWLEDGE BASE (EXPANDED FEATURE) ---
 const PERSONA_KNOWLEDGE = {
@@ -295,7 +294,6 @@ function wordCount(text) {
   return (text || "").trim().split(/\s+/).filter(Boolean).length;
 }
 
-<<<<<<< HEAD
 function validateOutput(jsonOut) {
   const required = ["subject", "opening_line", "body", "cta"];
   for (const k of required) {
@@ -400,7 +398,7 @@ app.post("/generate", async (req, res) => {
     validateOutput(emailJson);
 
     res.json({ ok: true, model: MODEL, email: emailJson });
-=======
+
 async function llmJson({ system, user, n = 1, temperature = Number(TEMPERATURE) }) {
   const r = await fetch(`${BASE_URL}/chat/completions`, {
     method: 'POST',
@@ -525,15 +523,12 @@ JSON schema:
     if (!emails.length) throw new Error('Model returned no valid variants. Try again.');
 
     res.json({ ok: true, model: MODEL, emails });
->>>>>>> 42e76a2 (Final working logic with 11 Personas and Refinement Fix)
   } catch (err) {
     res.status(400).json({ ok: false, error: String(err?.message || err) });
   }
 });
 
-<<<<<<< HEAD
 app.listen(PORT, () => {
-=======
 // --- API Endpoint for REWRITE/REFINEMENT ---
 app.post('/rewrite', async (req, res) => {
   const { prompt, email_text } = req.body || {};
@@ -613,6 +608,5 @@ app.post('/rewrite', async (req, res) => {
 
 
 app.listen(Number(PORT), () => {
->>>>>>> 42e76a2 (Final working logic with 11 Personas and Refinement Fix)
   console.log(`AI Email Generator server listening on http://localhost:${PORT}`);
 });
