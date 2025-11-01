@@ -67,11 +67,11 @@ Write exactly ${variants || 1} email(s) tailored to:
 - Competitor: ${proof || "None"}
 `;
 
-    const resp = await openai.responses.create({
-      model: "gpt-4o-mini",
-      input: prompt,
-      response_format: { type: "json_object" }
-    });
+const resp = await openai.responses.create({
+  model: "gpt-4o-mini",
+  input: prompt,
+  // No response_format needed — the model will return text by default
+});
 
     const text = resp.output_text || "";
     const parsed = safeJSONParse(text);
