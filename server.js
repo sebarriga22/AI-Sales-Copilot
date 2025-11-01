@@ -13,7 +13,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // File path setup
->>>>>>> b51f649 (Update: new frontend + updated server.js)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -205,7 +204,6 @@ const PERSONA_KNOWLEDGE = {
     },
 };
 
-
 // --- Canopy Competitors for Battle Card Analysis ---
 const COMPETITORS = [
   'Karbon', 'Taxdome', 'Financial Cents', 'Firm360', 
@@ -283,7 +281,6 @@ function baseGuards(maxWords) {
 - US English. Output MUST be valid JSON.`;
 }
 
->>>>>>> 42e76a2 (Final working logic with 11 Personas and Refinement Fix)
 function reqField(obj, field, msg) {
   if (!obj[field] || String(obj[field]).trim().length === 0) {
     throw new Error(msg || `Missing field: ${field}`);
