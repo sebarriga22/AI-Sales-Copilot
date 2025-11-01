@@ -22,7 +22,6 @@ const {
   MODEL = 'gpt-4o-mini',
   TEMPERATURE = '0.6',
   MAX_WORDS = '150',
-  PORT = 3000,
 } = process.env;
 
 // Accept either API_KEY or OPENAI_API_KEY (Render uses OPENAI_API_KEY)
